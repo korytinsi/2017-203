@@ -161,10 +161,8 @@ void korytinsi::lab3()
  */
 void korytinsi::lab4()
 {
-double *x;
-
-x = new double[N];
-  double* AA = new double[N];
+    long double eps = 0.0000000001;
+double* AA = new double[N];
     double* B = new double[N];
 int z;
  AA[0]=A[0][1]/(-A[0][0]);
@@ -190,6 +188,31 @@ for(int i=N-2;i>=0;i--)
  */
 void korytinsi::lab5()
 {
+    long double eps = 0.0000000001;
+
+
+    long double* p = new long double[N];
+    long double norm;
+    for (int i = 0; i < N; i++)
+        x[i]=0;
+    do {
+        for (int i = 0; i < N; i++)
+        {
+            p[i] = b[i];
+            for (int j = 0; j < N; j++)
+                if (i != j) p[i] -= A[i][j] * x[j];
+            p[i] /= A[i][i];
+        }
+        norm = fabs(x[0] - p[0]);
+        for (int h = 0; h < N; h++)
+        {
+            if (fabs(x[h] - p[h]) > norm)
+                norm = fabs(x[h] - p[h]);
+            x[h] = p[h];
+
+        }
+    } while (norm > eps);
+    delete[] p;
 
 }
 
@@ -200,7 +223,33 @@ void korytinsi::lab5()
  */
 void korytinsi::lab6()
 {
+long double eps = 0.000001;
+    long double* y = new long double[N];
+    long double norm = 0;
+    long double var = 0;
 
+    for (int i = 0; i < N; i++)
+            x[i] = 0;
+    do
+    {
+        for (int i = 0; i < N; i++)
+            y[i] = x[i];
+
+        for (int i = 0; i < N; i++)
+        {
+            var = 0;
+            norm = 0;
+            for (int j = 0; j < i; j++)
+                var += (A[i][j] * x[j]);
+            for (int j = i + 1; j < N; j++)
+                var += (A[i][j] * x[j]);
+            x[i] = (b[i] - var) / A[i][i];
+            for (int i = 0; i < N; i++)
+                norm += (x[i] - y[i])*(x[i] - y[i]);
+        }
+    } while (sqrt(norm) >= eps);
+
+    delete[] y;
 }
 
 
